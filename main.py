@@ -8,7 +8,7 @@ with open("sha.txt") as file:
     array = [row.strip() for row in file]
 
 
-def f(alpha_bit):
+def crack_sha256_hashes(alpha_bit):
     for i in itertools.product(alpha_bit, alpha, alpha, alpha, alpha):
         if sha256(''.join(i).encode('utf-8')).hexdigest() in array:
             print('Password for the hash function ' + sha256(''.join(i).encode('utf-8')).hexdigest() + ' - ' + ''.join(i))
@@ -34,7 +34,7 @@ if __name__ == '__main__':
             bit = alpha[parts_count * i:]
         else:
             bit = alpha[parts_count * i:parts_count * (i + 1)]
-        p = mp.Process(target=f, args=(bit,))
+        p = mp.Process(target=crack_sha256_hashes, args=(bit,))
         procs.append(p)
         p.start()
     [proc.join() for proc in procs]
